@@ -22,41 +22,41 @@ pipeline {
                 sh 'php artisan migrate'
             }
         }
-        stage("Unit test") {
-            steps {
-                sh 'php artisan test'
-            }
-        }
-        stage("Code coverage") {
-            steps {
-                sh "vendor/bin/phpunit --coverage-html 'reports/coverage'"
-            }
-        }
-        stage("Static code analysis larastan") {
-            steps {
-                sh "vendor/bin/phpstan analyse --memory-limit=2G"
-            }
-        }
-        stage("Static code analysis phpcs") {
-            steps {
-                sh "vendor/bin/phpcs"
-            }
-        }
+        // stage("Unit test") {
+        //     steps {
+        //         sh 'php artisan test'
+        //     }
+        // }
+        // stage("Code coverage") {
+        //     steps {
+        //         sh "vendor/bin/phpunit --coverage-html 'reports/coverage'"
+        //     }
+        // }
+        // stage("Static code analysis larastan") {
+        //     steps {
+        //         sh "vendor/bin/phpstan analyse --memory-limit=2G"
+        //     }
+        // }
+        // stage("Static code analysis phpcs") {
+        //     steps {
+        //         sh "vendor/bin/phpcs"
+        //     }
+        // }
         stage("Docker build") {
             steps {
                 sh "docker build -t wolneycarneiro91/dep ."
             }
         }
-        stage("Docker push") {
-            environment {
-                DOCKER_USERNAME = credentials("docker-user")
-                DOCKER_PASSWORD = credentials("docker-password")
-            }
-            steps {
-                sh "docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}"
-                sh "docker push wolneycarneiro91/dep"
-            }
-        }
+        // stage("Docker push") {
+        //     environment {
+        //         DOCKER_USERNAME = credentials("docker-user")
+        //         DOCKER_PASSWORD = credentials("docker-password")
+        //     }
+        //     steps {
+        //         sh "docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}"
+        //         sh "docker push wolneycarneiro91/dep"
+        //     }
+        // }
         stage("Deploy to staging") {
             steps {
                 sh "docker run -d --rm -p 80:80 --name laravel8cd wolneycarneiro91/dep"
